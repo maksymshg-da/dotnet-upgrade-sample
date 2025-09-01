@@ -1,10 +1,9 @@
-﻿using eShopLegacy.Utilities;
+using eShopLegacy.Utilities;
 using eShopLegacyMVC.Services;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Runtime.Remoting.Messaging;
 using System.Web.Http;
 
 namespace eShopLegacyMVC.Controllers.WebApi
