@@ -1,4 +1,4 @@
-﻿@model eShopLegacyMVC.Models.CatalogItem
+@model eShopLegacyMVC.Models.CatalogItem
 
 @{
     ViewBag.Title = "Create";
@@ -100,5 +100,6 @@
 </div>
 
 @section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/scripts/jquery.validate.min.js"></script>
+    <script src="~/scripts/jquery.validate.unobtrusive.min.js"></script>
 }

@@ -1,8 +1,3 @@
-﻿@using Microsoft.AspNetCore.Http
-@{
-    var machine = Context?.Session?.GetString("MachineName") ?? "";
-    var start = Context?.Session?.GetString("SessionStartTime") ?? "";
-}
 <!DOCTYPE html>
 <html>
 <head>
@@ -40,7 +35,8 @@
                 <section class="col-sm-6">
                     <img class="esh-app-footer-text hidden-xs" src="~/images/main_footer_text.png" width="335" height="26" alt="footer text image" />
                     <br />
-                    <small>@(machine + ", " + start)</small>
+                    @{ var sessionInfo = new HtmlString($"{HttpContext.Current?.Session?["MachineName"]}, {HttpContext.Current?.Session?["SessionStartTime"]}");}
+                    <small>@sessionInfo</small>
                 </section>
                 
             </article>
