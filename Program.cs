@@ -3,6 +3,7 @@ using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.SystemWebAdapters;
 using eShopLegacyMVC.Modules;
 using eShopLegacyMVC.Models;
 using eShopLegacyMVC.Models.Infrastructure;
@@ -14,6 +15,9 @@ builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
 
 // Add framework services
 builder.Services.AddControllersWithViews();
+
+// Register SystemWebAdapters to support legacy System.Web APIs when needed
+builder.Services.AddSystemWebAdapters();
 
 // Register classic EF DbContext as scoped and initializer
 builder.Services.AddScoped<CatalogDBContext>(provider => new CatalogDBContext("name=CatalogDBContext"));
@@ -51,6 +55,9 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseStaticFiles();
+
+// Enable SystemWebAdapters middleware
+app.UseSystemWebAdapters();
 
 app.MapControllerRoute(
     name: "default",
