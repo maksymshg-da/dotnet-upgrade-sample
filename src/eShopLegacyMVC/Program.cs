@@ -10,8 +10,7 @@ builder.Services.AddSystemWebAdapters()
         options.RegisterKey<string>("MachineName");
         options.RegisterKey<string>("SessionStartTime");
     })
-    .AddHttpApplication<MvcApplication>();
-
+    
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
