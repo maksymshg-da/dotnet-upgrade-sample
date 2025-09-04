@@ -19,7 +19,7 @@
     <PackageReference Include="System.Diagnostics.PerformanceCounter" Version="4.5.0" />
     <PackageReference Include="System.IO.Compression" Version="4.3.0" />
     <PackageReference Include="System.IO.Compression.ZipFile" Version="4.3.0" />
-    <PackageReference Include="System.IO.Pipelines" Version="4.5.1" />
+    <PackageReference Include="System.IO.Pipelines" Version="10.0.0-preview.7.25380.108" />
     <PackageReference Include="System.Memory" Version="4.5.1" />
     <PackageReference Include="System.Net.Http" Version="4.3.4" />
     <PackageReference Include="System.Numerics.Vectors" Version="4.4.0" />
@@ -27,7 +27,7 @@
     <PackageReference Include="System.Threading.Channels" Version="4.5.0" />
     <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.1" />
     <PackageReference Include="WebGrease" Version="1.6.0" />
-    <PackageReference Include="Antlr" Version="4.6.6" />
+    <PackageReference Include="Antlr" Version="3.5.0.2" />
     <PackageReference Include="log4net" Version="2.0.10" />
     <PackageReference Include="Microsoft.ApplicationInsights" Version="2.9.1" />
     <PackageReference Include="Microsoft.AspNet.SessionState.SessionStateModule" Version="1.1.0" />
@@ -35,7 +35,7 @@
     <PackageReference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform" Version="2.0.1" />
     <PackageReference Include="Microsoft.Web.Infrastructure" Version="1.0.0.0" />
     <!-- Autofac.Mvc5 removed to avoid conflict with Autofac 6.x -->
-    <PackageReference Include="bootstrap" Version="4.3.1" />
+    <PackageReference Include="bootstrap" Version="5.3.8" />
     <PackageReference Include="jQuery" Version="3.5.0" />
     <PackageReference Include="jQuery.Validation" Version="1.19.4" />
     <PackageReference Include="Microsoft.ApplicationInsights.Agent.Intercept" Version="2.4.0" />
@@ -54,7 +54,7 @@
     <PackageReference Include="popper.js" Version="1.14.3" />
     <PackageReference Include="Respond" Version="1.4.2" />
     <PackageReference Include="Microsoft.AspNetCore.SystemWebAdapters" Version="2.0.0" />
-    <PackageReference Include="System.Text.Json" Version="8.0.0" />
+    <PackageReference Include="System.Text.Json" Version="10.0.0-preview.7.25380.108" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.8" />
   </ItemGroup>
   <ItemGroup>
