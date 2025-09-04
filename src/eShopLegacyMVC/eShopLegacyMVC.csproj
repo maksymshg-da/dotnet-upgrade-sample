@@ -4,7 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Autofac" Version="6.0.0" />
+    <PackageReference Include="Autofac" Version="4.9.4" />
     <PackageReference Include="autofac.webapi2" Version="6.0.1" />
     <PackageReference Include="EntityFramework" Version="6.5.1" />
     <PackageReference Include="Microsoft.AspNet.WebApi" Version="5.2.7" />
@@ -25,7 +25,7 @@
     <PackageReference Include="System.Threading.Channels" Version="4.5.0" />
     <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.1" />
     <PackageReference Include="WebGrease" Version="1.6.0" />
-    <PackageReference Include="Antlr" Version="3.5.0.2" />
+    <PackageReference Include="Antlr" Version="4.6.6" />
     <PackageReference Include="log4net" Version="2.0.10" />
     <PackageReference Include="Microsoft.ApplicationInsights" Version="2.9.1" />
     <PackageReference Include="Microsoft.AspNet.SessionState.SessionStateModule" Version="1.1.0" />
@@ -84,4 +84,4 @@
   <ItemGroup>
     <ProjectReference Include="..\..\eShopLegacy.Utilities\eShopLegacy.Utilities.csproj" />
   </ItemGroup>
-</Project></Project>
+</Project>
