@@ -7,8 +7,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Text.RegularExpressions;
-using System.Web;
-using System.Web.Hosting;
+using Microsoft.AspNetCore.Hosting;
 
 namespace eShopLegacyMVC.Models.Infrastructure
 {
@@ -22,11 +21,13 @@ namespace eShopLegacyMVC.Models.Infrastructure
 
         private CatalogItemHiLoGenerator indexGenerator;
         private bool useCustomizationData;
+        private readonly IWebHostEnvironment _env;
 
-        public CatalogDBInitializer(CatalogItemHiLoGenerator indexGenerator)
+        public CatalogDBInitializer(CatalogItemHiLoGenerator indexGenerator, IWebHostEnvironment env)
         {
             this.indexGenerator = indexGenerator;
-            useCustomizationData = bool.Parse(ConfigurationManager.AppSettings["UseCustomizationData"]);
+            _env = env ?? throw new ArgumentNullException(nameof(env));
+            useCustomizationData = bool.Parse(ConfigurationManager.AppSettings["UseCustomizationData"] ?? "false");
         }
 
         protected override void Seed(CatalogDBContext context)
@@ -39,7 +40,6 @@ namespace eShopLegacyMVC.Models.Infrastructure
             AddCatalogBrands(context);
             AddCatalogItems(context);
             AddCatalogItemPictures();
-            
         }
 
         private void AddCatalogTypes(CatalogDBContext context)
@@ -94,7 +94,7 @@ namespace eShopLegacyMVC.Models.Infrastructure
 
         private IEnumerable<CatalogType> GetCatalogTypesFromFile()
         {
-            var contentRootPath = HostingEnvironment.ApplicationPhysicalPath;
+            var contentRootPath = _env.ContentRootPath;
             string csvFileCatalogTypes = Path.Combine(contentRootPath, "Setup", "CatalogTypes.csv");
 
             if (!File.Exists(csvFileCatalogTypes))
@@ -130,7 +130,8 @@ namespace eShopLegacyMVC.Models.Infrastructure
 
         static IEnumerable<CatalogBrand> GetCatalogBrandsFromFile()
         {
-            var contentRootPath = HostingEnvironment.ApplicationPhysicalPath;
+            // This static method can't access _env; prefer non-static but keep behavior of fallback
+            var contentRootPath = AppDomain.CurrentDomain.BaseDirectory;
             string csvFileCatalogBrands = Path.Combine(contentRootPath, "Setup", "CatalogBrands.csv");
 
             if (!File.Exists(csvFileCatalogBrands))
@@ -166,7 +167,7 @@ namespace eShopLegacyMVC.Models.Infrastructure
 
         static IEnumerable<CatalogItem> GetCatalogItemsFromFile(CatalogDBContext context)
         {
-            var contentRootPath = HostingEnvironment.ApplicationPhysicalPath;
+            var contentRootPath = AppDomain.CurrentDomain.BaseDirectory;
             string csvFileCatalogItems = Path.Combine(contentRootPath, "Setup", "CatalogItems.csv");
 
             if (!File.Exists(csvFileCatalogItems))
@@ -332,7 +333,7 @@ namespace eShopLegacyMVC.Models.Infrastructure
 
         private void ExecuteScript(CatalogDBContext context, string scriptFile)
         {
-            var scriptFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, scriptFile);
+            var scriptFilePath = Path.Combine(_env.ContentRootPath, scriptFile);
             context.Database.ExecuteSqlCommand(File.ReadAllText(scriptFilePath));
         }
 
@@ -342,14 +343,14 @@ namespace eShopLegacyMVC.Models.Infrastructure
             {
                 return;
             }
-            var contentRootPath = HostingEnvironment.ApplicationPhysicalPath;
-            DirectoryInfo picturePath = new DirectoryInfo(Path.Combine(contentRootPath, "Pics"));
+            var webRootPath = _env.WebRootPath;
+            DirectoryInfo picturePath = new DirectoryInfo(Path.Combine(webRootPath, "Pics"));
             foreach (FileInfo file in picturePath.GetFiles())
             {
                 file.Delete();
             }
-            
-            string zipFileCatalogItemPictures = Path.Combine(contentRootPath, "Setup", "CatalogItems.zip");
+
+            string zipFileCatalogItemPictures = Path.Combine(_env.ContentRootPath, "Setup", "CatalogItems.zip");
             ZipFile.ExtractToDirectory(zipFileCatalogItemPictures, picturePath.ToString());
         }
     }
