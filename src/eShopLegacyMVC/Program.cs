@@ -100,4 +100,4 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Catalog}/{action=Index}/{id?}");
 
-app.Run();app.Run();
+app.Run();
