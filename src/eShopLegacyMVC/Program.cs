@@ -9,7 +9,7 @@ builder.Services.AddSystemWebAdapters()
     {
         options.RegisterKey<string>("MachineName");
         options.RegisterKey<string>("SessionStartTime");
-    })
+    });
     
 // Add services to the container.
 builder.Services.AddControllersWithViews();
