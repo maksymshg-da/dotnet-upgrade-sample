@@ -1,19 +1,11 @@
-﻿using Autofac;
-using Autofac.Integration.Mvc;
-using Autofac.Integration.WebApi;
-using eShopLegacyMVC.Models;
+﻿using eShopLegacyMVC.Models;
 using eShopLegacyMVC.Models.Infrastructure;
 using eShopLegacyMVC.Modules;
 using log4net;
 using System;
-using System.Configuration;
-using System.Data.Entity;
 using System.Diagnostics;
 using System.Reflection;
 using System.Web;
-using System.Web.Http;
-using System.Web.Mvc;
-using System.Web.Optimization;
 
 namespace eShopLegacyMVC
 {
@@ -21,17 +13,9 @@ namespace eShopLegacyMVC
     {
         private static readonly ILog _log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        IContainer container;
-
         protected void Application_Start()
         {
-            container = RegisterContainer();
-            GlobalConfiguration.Configure(WebApiConfig.Register);
-            AreaRegistration.RegisterAllAreas();
-            FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
-            RouteConfig.RegisterRoutes(RouteTable.Routes);
-            BundleConfig.RegisterBundles(BundleTable.Bundles);
-            ConfigDataBase();
+            // Legacy initialization moved to Program.cs for ASP.NET Core host
         }
 
         /// <summary>
@@ -53,62 +37,25 @@ namespace eShopLegacyMVC
             _log.Debug("WebApplication_BeginRequest");
         }
 
-        /// <summary>
-        /// http://docs.autofac.org/en/latest/integration/mvc.html
-        /// </summary>
-        protected IContainer RegisterContainer()
+        public class ActivityIdHelper
         {
-            var builder = new ContainerBuilder();
-
-            var thisAssembly = Assembly.GetExecutingAssembly();
-            builder.RegisterControllers(thisAssembly);
-            builder.RegisterApiControllers(thisAssembly);
-
-            var mockData = bool.Parse(ConfigurationManager.AppSettings["UseMockData"]);
-            builder.RegisterModule(new ApplicationModule(mockData));
-
-            var container = builder.Build();
-
-            // set mvc resolver
-            DependencyResolver.SetResolver(new AutofacDependencyResolver(container));
-
-            // set webapi resolver
-            var resolver = new AutofacWebApiDependencyResolver(container);
-            GlobalConfiguration.Configuration.DependencyResolver = resolver;
-
-            return container;
-        }
-
-        private void ConfigDataBase()
-        {
-            var mockData = bool.Parse(ConfigurationManager.AppSettings["UseMockData"]);
-
-            if (!mockData)
+            public override string ToString()
             {
-                Database.SetInitializer<CatalogDBContext>(container.Resolve<CatalogDBInitializer>());
+                if (Trace.CorrelationManager.ActivityId == Guid.Empty)
+                {
+                    Trace.CorrelationManager.ActivityId = Guid.NewGuid();
+                }
+
+                return Trace.CorrelationManager.ActivityId.ToString();
             }
         }
 
-    }
-
-    public class ActivityIdHelper
-    {
-        public override string ToString()
+        public class WebRequestInfo
         {
-            if (Trace.CorrelationManager.ActivityId == Guid.Empty)
+            public override string ToString()
             {
-                Trace.CorrelationManager.ActivityId = Guid.NewGuid();
+                return HttpContext.Current?.Request?.RawUrl + ", " + HttpContext.Current?.Request?.UserAgent;
             }
-
-            return Trace.CorrelationManager.ActivityId.ToString();
-        }
-    }
-
-    public class WebRequestInfo
-    {
-        public override string ToString()
-        {
-            return HttpContext.Current?.Request?.RawUrl + ", " + HttpContext.Current?.Request?.UserAgent;
         }
     }
 }
